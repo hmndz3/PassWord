@@ -89,9 +89,47 @@ describe('<PasswordStrengthMeter />', () => {
   describe('accesibilidad (bonus)', () => {
     it('el input de contraseña está asociado a un label accesible', () => {
       render(<PasswordStrengthMeter />);
-      // getByLabelText falla si no existe un label asociado al input.
       const input = screen.getByLabelText(/contraseña/i);
       expect(input).toBeInTheDocument();
+    });
+  });
+
+  describe('barra de progreso (bonus)', () => {
+    it('renderiza una barra de progreso accesible con valor inicial 0', () => {
+      render(<PasswordStrengthMeter />);
+      const bar = screen.getByRole('progressbar');
+      expect(bar).toBeInTheDocument();
+      expect(bar).toHaveAttribute('aria-valuemin', '0');
+      expect(bar).toHaveAttribute('aria-valuemax', '100');
+      expect(bar).toHaveAttribute('aria-valuenow', '0');
+    });
+
+    it('la barra refleja "débil" como 20', async () => {
+      const user = userEvent.setup();
+      render(<PasswordStrengthMeter />);
+      await user.type(screen.getByLabelText(/contraseña/i), 'abc');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '20');
+    });
+
+    it('la barra refleja "media" como 50', async () => {
+      const user = userEvent.setup();
+      render(<PasswordStrengthMeter />);
+      await user.type(screen.getByLabelText(/contraseña/i), 'abcdefgh');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+    });
+
+    it('la barra refleja "fuerte" como 75', async () => {
+      const user = userEvent.setup();
+      render(<PasswordStrengthMeter />);
+      await user.type(screen.getByLabelText(/contraseña/i), 'contra123');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '75');
+    });
+
+    it('la barra refleja "muy fuerte" como 100', async () => {
+      const user = userEvent.setup();
+      render(<PasswordStrengthMeter />);
+      await user.type(screen.getByLabelText(/contraseña/i), 'contra1!');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100');
     });
   });
 });
