@@ -1,0 +1,4 @@
+# Configuración del test runner nativo de Bun.
+# Carga happy-dom y los matchers de jest-dom antes de cada archivo de test.
+[test]
+preload = ["./src/bunTestSetup.js"]

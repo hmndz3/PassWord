@@ -1,11 +1,17 @@
-// Punto de entrada de la app.
-// En el commit 1 todavía no existe el componente PasswordStrengthMeter:
-// se implementará luego de escribir los tests (flujo TDD).
+import PasswordStrengthMeter from './components/PasswordStrengthMeter.jsx';
+
 export default function App() {
   return (
-    <main>
-      <h1>Password Strength Meter</h1>
-      <p>Setup inicial. Próximo paso: escribir tests.</p>
+    <main className="app">
+      <section className="app__card">
+        <header className="app__header">
+          <h1 className="app__title">Password Strength Meter</h1>
+          <p className="app__subtitle">
+            Escribe una contraseña y observa su nivel de fortaleza en tiempo real.
+          </p>
+        </header>
+        <PasswordStrengthMeter />
+      </section>
     </main>
   );
 }
